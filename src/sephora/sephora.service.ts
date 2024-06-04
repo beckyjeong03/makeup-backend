@@ -33,23 +33,77 @@ export class SephoraService {
           timeout: 0, // Wait indefinitely for the page to load, consider a reasonable timeout in production
         }),
       ]);
+
       await page.type('#site_search_input', products);
       await Promise.all([
         page.waitForNavigation(),
         page.keyboard.press('Enter'),
       ]);
-      return await page.$$eval(
-        '.css-1322gsb .css-foh208, .css-1322gsb .css-1qe8tjm',
+
+      // go over the products on the listing and create an object that holds the url value
+      const productLinks = await page.$$eval(
+        '.css-1322gsb .css-foh208',
         (resultItems) => {
           return resultItems.map((resultItem) => {
             const url = resultItem.querySelector('a')?.href;
             const title =
               resultItem.querySelector('.ProductTile-name')?.textContent;
             const price = resultItem.querySelector('.css-0')?.textContent;
+
             return { url, title, price };
           });
         },
       );
+
+      const productDetails = [];
+
+      // return productLinks;
+      for (const link of productLinks) {
+        console.log(link?.url);
+        await page.goto(link?.url, { waitUntil: 'networkidle2' });
+        await page.waitForSelector('.css-197cabr');
+        await page.click('.css-197cabr');
+        await page.waitForSelector('.css-1imcv2s');
+        const temp = await page.evaluate(() => {
+          const textElement = document.querySelector('.css-1imcv2s div');
+          return textElement ? textElement.textContent : 'No text found';
+        });
+        productDetails.push({
+          url: link?.url,
+          title: link?.title,
+          price: link?.price,
+          description: temp,
+        });
+      }
+      return productDetails;
+
+      // async function scrapeLinks(page) {
+      //   await page.$$eval(
+      //     '.css-1322gsb .css-foh208, .css-1322gsb .css-1qe8tjm',
+      //     (resultItems) => {
+      //       return resultItems.map((resultItem) => {
+      //         const url = resultItem?.querySelector('a')?.href;
+      //         return url;
+      //       });
+      //     },
+      //   );
+      // }
+
+      // const links = await scrapeLinks(page);
+
+      // if (links !== null) {
+      //   console.log(links);
+      //   // for (const link in links) {
+      //   //   console.log(link);
+      //   //   await page.goto(link, { waitUntil: 'networkidle2' });
+      //   //   await page.waitForSelector('.css-197cabr');
+      //   //   await page.click('.css-197cabr');
+      //   // }
+      // } else {
+      //   console.log('error');
+      // }
+
+      return { lol: products };
     } finally {
       await browser.close();
     }
