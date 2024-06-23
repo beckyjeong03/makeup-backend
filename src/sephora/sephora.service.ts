@@ -76,34 +76,6 @@ export class SephoraService {
         });
       }
       return productDetails;
-
-      // async function scrapeLinks(page) {
-      //   await page.$$eval(
-      //     '.css-1322gsb .css-foh208, .css-1322gsb .css-1qe8tjm',
-      //     (resultItems) => {
-      //       return resultItems.map((resultItem) => {
-      //         const url = resultItem?.querySelector('a')?.href;
-      //         return url;
-      //       });
-      //     },
-      //   );
-      // }
-
-      // const links = await scrapeLinks(page);
-
-      // if (links !== null) {
-      //   console.log(links);
-      //   // for (const link in links) {
-      //   //   console.log(link);
-      //   //   await page.goto(link, { waitUntil: 'networkidle2' });
-      //   //   await page.waitForSelector('.css-197cabr');
-      //   //   await page.click('.css-197cabr');
-      //   // }
-      // } else {
-      //   console.log('error');
-      // }
-
-      return { lol: products };
     } finally {
       await browser.close();
     }
