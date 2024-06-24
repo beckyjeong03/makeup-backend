@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
+import { CreateProductDataDto } from 'src/productdatas/create-productdata.dto';
+import { ProductdatasService } from 'src/productdatas/productdatas.service';
 
 @Injectable()
 export class SephoraService {
+  constructor(private productdatasService: ProductdatasService) {}
   async getProducts(products: string) {
     const browser = await puppeteer.launch({
       headless: true,
@@ -68,12 +71,22 @@ export class SephoraService {
           const textElement = document.querySelector('.css-1imcv2s div');
           return textElement ? textElement.textContent : 'No text found';
         });
-        productDetails.push({
+
+        const productDetail = {
           url: link?.url,
           title: link?.title,
           price: link?.price,
           description: temp,
-        });
+        };
+        productDetails.push(productDetail);
+
+        const createProductDataDto: CreateProductDataDto = {
+          url: productDetail?.url,
+          title: productDetail?.title,
+          price: productDetail?.price,
+          description: productDetail?.description,
+        };
+        await this.productdatasService.create(createProductDataDto);
       }
       return productDetails;
     } finally {

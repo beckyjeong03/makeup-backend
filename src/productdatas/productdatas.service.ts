@@ -14,6 +14,7 @@ export class ProductdatasService {
     createProductDataDto: CreateProductDataDto,
   ): Promise<ProductData> {
     const createProductData = new this.productdataModel(createProductDataDto);
+    console.log(createProductData);
     return createProductData.save();
   }
 

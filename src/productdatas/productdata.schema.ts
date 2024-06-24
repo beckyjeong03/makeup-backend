@@ -5,8 +5,8 @@ export type ProductDataDocument = HydratedDocument<ProductData>;
 
 @Schema()
 export class ProductData {
-  @Prop({ unique: true })
-  url: string;
+  @Prop()
+  url?: string;
 
   @Prop()
   title?: string;

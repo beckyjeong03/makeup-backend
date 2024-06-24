@@ -15,5 +15,6 @@ import { ProductData, ProductDataSchema } from './productdata.schema';
   ],
   controllers: [ProductdatasController],
   providers: [ProductdatasService],
+  exports: [ProductdatasService],
 })
 export class ProductdatasModule {}

@@ -3,9 +3,9 @@ import { SephoraService } from './sephora.service';
 
 @Controller('sephora')
 export class SephoraController {
-  constructor(private readonly sephoraService: SephoraService) {}
+  constructor(private sephoraService: SephoraService) {}
   @Get('products')
-  getProducts(@Query('product') product: string) {
+  async getProducts(@Query('product') product: string) {
     return this.sephoraService.getProducts(product);
   }
 }
