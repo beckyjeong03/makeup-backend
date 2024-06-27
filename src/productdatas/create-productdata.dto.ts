@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsArray, IsOptional } from 'class-validator';
 
 export class CreateProductDataDto {
   @IsString()
@@ -10,7 +10,8 @@ export class CreateProductDataDto {
   @IsString()
   price: string;
 
-  @IsString()
+  @IsArray()
+  @IsString({ each: true })
   @IsOptional()
-  description?: string;
+  description?: string[];
 }

@@ -72,11 +72,13 @@ export class SephoraService {
           return textElement ? textElement.textContent : 'No text found';
         });
 
+        const arr = temp.split(', ');
+
         const productDetail = {
           url: link?.url,
           title: link?.title,
           price: link?.price,
-          description: temp,
+          description: arr,
         };
         productDetails.push(productDetail);
 

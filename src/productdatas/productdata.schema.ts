@@ -14,8 +14,8 @@ export class ProductData {
   @Prop()
   price?: string;
 
-  @Prop()
-  description?: string;
+  @Prop({ type: [String], default: [] })
+  description?: string[];
 }
 
 export const ProductDataSchema = SchemaFactory.createForClass(ProductData);
